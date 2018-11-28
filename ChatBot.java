@@ -6,23 +6,18 @@ public class ChatBot {
     private Menu menu = Menu.getInstance();
 
     public ChatBot() {
-        MilanoPizza milanoPizza = new MilanoPizza();
-        TropicoPizza tropicoPizza = new TropicoPizza();
-        CaesarPizza caesarPizza = new CaesarPizza();
-        SpecialPizza specialPizza = new SpecialPizza();
-        MargharitaPizza margharitaPizza = new MargharitaPizza();
-        FourHorsemanOfCheesePizza fourHorsemanOfCheesePizza = new FourHorsemanOfCheesePizza();
         AppleJuice appleJuice = new AppleJuice();
         RedWine redWine = new RedWine();
 
         menu.add(appleJuice);
         menu.add(redWine);
-        menu.add(fourHorsemanOfCheesePizza);
-        menu.add(margharitaPizza);
-        menu.add(milanoPizza);
-        menu.add(tropicoPizza);
-        menu.add(caesarPizza);
-        menu.add(specialPizza);
+        menu.add(new Pizza("Caesar", 100, "Caesar"));
+        menu.add(new Pizza("Milano", 90, "Milano"));
+        menu.add(new Pizza("Tropico", 90, "Tropico"));
+        menu.add(new Pizza("Special", 110, "Special"));
+        menu.add(new Pizza("Margharita", 80, "Margharita"));
+        menu.add(new Pizza("Four Horseman Of Cheese", 120, "4Horseman"));
+
 
         DiscountCalculator discountCalculator = new DiscountCalculator();
         discountCalculator.enableDiscountForProduct("Pizza");
