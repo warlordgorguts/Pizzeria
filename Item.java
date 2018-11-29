@@ -14,7 +14,7 @@ public interface Item {
 
     void setDiscount(String discount);
 
-    void printMenu();
+    void print();
 
     //int getDiscountedQuantity();
 

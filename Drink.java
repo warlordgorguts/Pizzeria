@@ -1,10 +1,17 @@
 package pizzabot;
 
-public abstract class Drink implements Item {
+public class Drink implements Item {
 
-    //private int quantity = 0;
-    //private int discountedQuantity = 0;
+    private String name;
+    private float price;
+    private String commandToPrepare;
     private String discount = "Drink";
+
+    public Drink(String name, float price, String commandToPrepare) {
+        this.name = name;
+        this.price = price;
+        this.commandToPrepare = commandToPrepare;
+    }
 
     @Override
     public int getPriority() {
@@ -12,7 +19,7 @@ public abstract class Drink implements Item {
     }
 
     @Override
-    public void printMenu() {
+    public void print() {
         System.out.println("------------------");
         System.out.println(getName() + ", " + getPrice());
         System.out.println("To buy type: " + getCommandToPrepare());
@@ -29,6 +36,20 @@ public abstract class Drink implements Item {
         this.discount = discount;
     }
 
+    @Override
+    public float getPrice() {
+        return price;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getCommandToPrepare() {
+        return commandToPrepare;
+    }
     /*
     @Override
     public int getQuantity() {

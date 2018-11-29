@@ -11,8 +11,7 @@ public class Reader {
     }
 
     public String[] read() {
-        String input = scanner.nextLine();
-        return input.split(" ");
+        return scanner.nextLine().split(" ");
     }
 
     public String readString() {

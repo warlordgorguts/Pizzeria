@@ -29,7 +29,7 @@ public class Pizza implements Item {
     }
 
     @Override
-    public void printMenu() {
+    public void print() {
         System.out.println("------------------");
         System.out.println(getName() + ", " + getPrice());
         System.out.println("To buy type: " + getCommandToPrepare());

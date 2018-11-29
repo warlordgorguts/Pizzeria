@@ -1,20 +1,18 @@
 package pizzabot;
 
+import java.util.Optional;
+
 public class Validator {
 
-    public void validate(ChatBot chatBot, Reader reader) {
+    private static int countOfOperations;
 
+    public void validate(Order order) {
         StringBuilder wrongCommand = new StringBuilder();
 
-        boolean needToRead = true;
-
-        Order order = chatBot.getOrder();
-        Menu menu = chatBot.getMenu();
-
-        for (String commandString : reader.read()) {
-            Item objectByCommand = menu.getObjectByCommand(commandString);
-            if (objectByCommand != null) {
-                order.add(objectByCommand);
+        for (String commandString : new Reader().read()) {
+            Optional<Item> itemByCommand = Menu.getInstance().get(commandString);
+            if (itemByCommand.isPresent()) {
+                order.add(itemByCommand.get());
             } else {
                 wrongCommand.append(commandString).append(" ");
             }
@@ -22,28 +20,33 @@ public class Validator {
 
         if (wrongCommand.length() > 0) {
             System.out.println("Please check spelling and repeat: " + wrongCommand.toString());
-            reader = new Reader();
-            validate(chatBot, reader);
+            validate(order);
             return;
         }
 
-        if ((order.getItemsEligibleDiscountCount()) % 3 == 2) {
+        if (order.getItemsEligibleDiscountCount() % 3 == 2 && countOfOperations == 0) {
             boolean awaitingAnswer = true;
             System.out.println("You currently ordered: " + order.getItemsEligibleDiscountCount() + " discounted items.");
             System.out.println("Do you want to buy one more to get one for free? (y/n)");
             while (awaitingAnswer) {
-                String answer = reader.readString();
-                if (answer.equalsIgnoreCase("n")) {
-                    awaitingAnswer = false;
-                } else if (answer.equalsIgnoreCase("y")) {
-                    System.out.println("Type product command:");
-                    awaitingAnswer = false;
-                    reader = new Reader();
-                    validate(chatBot, reader);
-                } else {
-                    System.out.println("Type one of the following (y/n)");
+                switch (new Reader().readString()) {
+                    case "n": {
+                        awaitingAnswer = false;
+                        break;
+                    }
+                    case "y": {
+                        awaitingAnswer = false;
+                        System.out.println("Type product command:");
+                        countOfOperations++;
+                        validate(order);
+                        break;
+                    }
+                    default: {
+                        System.out.println("Type one of the following (y/n)");
+                    }
                 }
             }
         }
     }
+
 }
