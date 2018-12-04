@@ -3,9 +3,9 @@ package pizzabot;
 public class DiscountCard {
 
     private String cardNumber;
-    private int cardDiscount = 5;
+    private int cardDiscount;
 
-    private DiscountCard(String cardNumber) {
+    public DiscountCard(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

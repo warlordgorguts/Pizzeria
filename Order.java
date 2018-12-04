@@ -10,8 +10,11 @@ public class Order {
 
     private float price = 0;
     private List<Item> itemsEligibleDiscount = new ArrayList<>();
+    private List<DiscountRules> discountRulesList = new ArrayList<>();
+    private DiscountCard discountCard;
     private Map<Item, Integer> itemsQuantity = new TreeMap<>(itemComparator);
     private Map<Item, Integer> discountedItemsQuantity = new HashMap<>();
+
 
     private DiscountCalculator discountCalculator;
     private float priceChange = 0;
@@ -57,7 +60,8 @@ public class Order {
         calcItemsDiscount();
         System.out.println("Total price is: " + String.format("%.02f", price - priceChange));
         StringBuilder discountedStringBuilder = new StringBuilder();
-        discountedItemsQuantity.forEach((item, q) -> discountedStringBuilder.append(q).append(" ").append(item.getName()).append(" "));
+        discountedItemsQuantity.forEach((item, q) ->
+                discountedStringBuilder.append(q).append(" ").append(item.getName()).append(" "));
         System.out.println("You got for free: " + discountedStringBuilder);
     }
 
