@@ -1,6 +1,6 @@
 package pizzabot;
 
-public class NoDrinkRule implements DiscountRules {
+public class NoDrinkRule {
 
     private String messageToClient;
     private int priority;

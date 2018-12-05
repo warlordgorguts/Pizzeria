@@ -24,6 +24,10 @@ public class Validator {
             return;
         }
 
+        for (DiscountRules discountRule : order.getDiscountRules()) {
+            discountRule.executeRule();
+        }
+
         if (order.getItemsEligibleDiscountCount() % 3 == 2 && countOfOperations == 0) {
             boolean awaitingAnswer = true;
             System.out.println("You currently ordered: " + order.getItemsEligibleDiscountCount() + " discounted items.");

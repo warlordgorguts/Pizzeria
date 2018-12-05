@@ -11,16 +11,33 @@ public class Order {
     private float price = 0;
     private List<Item> itemsEligibleDiscount = new ArrayList<>();
     private List<DiscountRules> discountRulesList = new ArrayList<>();
+    private Map<Class, Boolean> discountRulesExecution = new TreeMap<>();
     private DiscountCard discountCard;
+
     private Map<Item, Integer> itemsQuantity = new TreeMap<>(itemComparator);
     private Map<Item, Integer> discountedItemsQuantity = new HashMap<>();
-
 
     private DiscountCalculator discountCalculator;
     private float priceChange = 0;
 
     public Order(DiscountCalculator discountCalculator) {
+
         this.discountCalculator = discountCalculator;
+        //FreeDelieveryRule freeDelieveryRule = new FreeDelieveryRule();
+
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+
+    public List<DiscountRules> getDiscountRules() {
+       return discountRulesList;
     }
 
     public void add(Item item) {
