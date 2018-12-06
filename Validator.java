@@ -25,9 +25,15 @@ public class Validator {
         }
 
         for (DiscountRules discountRule : order.getDiscountRules()) {
-            discountRule.executeRule();
+            discountRule.checkRule(order, this);
         }
 
+        for (DiscountRules discountRule : order.getDiscountRules()) {
+            discountRule.executeRule(order);
+            discountRule.printRule();
+        }
+
+        /*
         if (order.getItemsEligibleDiscountCount() % 3 == 2 && countOfOperations == 0) {
             boolean awaitingAnswer = true;
             System.out.println("You currently ordered: " + order.getItemsEligibleDiscountCount() + " discounted items.");
@@ -51,6 +57,8 @@ public class Validator {
                 }
             }
         }
+        */
+
     }
 
 }

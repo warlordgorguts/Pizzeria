@@ -1,5 +1,7 @@
 package pizzabot;
 
+import java.util.*;
+
 public class ChatBot {
 
     private Order order;
@@ -10,21 +12,13 @@ public class ChatBot {
         textFileReader.readFile();
         DiscountCalculator discountCalculator = new DiscountCalculator();
         discountCalculator.add("Pizza");
-        State freeDelieveryRuleState = new State();
-        FreeDeliveryRule freeDelieveryRule1 = new FreeDeliveryRule(freeDelieveryRuleState);
-        FreeDeliveryRule freeDelieveryRule2 = new FreeDeliveryRule(freeDelieveryRuleState);
-        FreeDeliveryRule freeDelieveryRule3 = new FreeDeliveryRule(freeDelieveryRuleState);
-        FreeDeliveryRule freeDelieveryRule4 = new FreeDeliveryRule(freeDelieveryRuleState);
-        System.out.println(freeDelieveryRule1.getState().getValue().toString());
-        System.out.println(freeDelieveryRule2.getState().getValue().toString());
-        System.out.println(freeDelieveryRule3.getState().getValue().toString());
-        System.out.println(freeDelieveryRule4.getState().getValue().toString());
-        freeDelieveryRule1.executeRule();
-        System.out.println(freeDelieveryRule1.getState().getValue().toString());
-        System.out.println(freeDelieveryRule2.getState().getValue().toString());
-        System.out.println(freeDelieveryRule3.getState().getValue().toString());
-        System.out.println(freeDelieveryRule4.getState().getValue().toString());
-        order = new Order(discountCalculator);
+        State discountCardState = new State();
+        List<DiscountRules> discountRulesList = new ArrayList<>();
+        DiscountCard discountCard = new DiscountCard(discountCardState, true);
+
+        discountRulesList.add(discountCard);
+
+        order = new Order(discountCalculator, discountRulesList);
     }
 
     public Order getOrder() {

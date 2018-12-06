@@ -1,24 +1,41 @@
 package pizzabot;
 
-public class DiscountCard {
+public class DiscountCard implements DiscountRules{
 
-    private String cardNumber;
-    private int cardDiscount;
+    private float discountCost;
+    private int discountAmount;
+    private boolean isActive;
+    private State state;
 
-    public DiscountCard(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public DiscountCard(State state, boolean isActive) {
+            this.state = state;
+            this.isActive = isActive;
     }
 
-    public String getCardNumber(){
-        return cardNumber;
+    public int getCardDiscount(String cardNumber){
+        return new JDBCReader().SelectDiscount(cardNumber);
     }
 
-    public int getCardDiscount(){
-        return cardDiscount;
+    @Override
+    public void checkRule(Order order, Validator validator) {
+        if (!state.getValue() && isActive) {
+            state.setValue(true);
+            System.out.println("Your discount card number?");
+            String cardNumber = new Reader().readString();
+            discountAmount = getCardDiscount(cardNumber);
+        }
     }
 
-    public void setCardDiscount(int cardDiscount){
-        this.cardDiscount = cardDiscount;
+    @Override
+    public void executeRule(Order order) {
+        if (isActive) {
+            discountCost = order.getPrice() * (discountAmount / 100);
+            order.setPrice(order.getPrice() - discountCost);
+        }
     }
 
+    @Override
+    public void printRule() {
+        System.out.println("Discount: " + discountCost);
+    }
 }

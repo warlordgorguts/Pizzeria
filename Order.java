@@ -10,7 +10,7 @@ public class Order {
 
     private float price = 0;
     private List<Item> itemsEligibleDiscount = new ArrayList<>();
-    private List<DiscountRules> discountRulesList = new ArrayList<>();
+    private List<DiscountRules> discountRulesList;
     private Map<Class, Boolean> discountRulesExecution = new TreeMap<>();
     private DiscountCard discountCard;
 
@@ -20,11 +20,10 @@ public class Order {
     private DiscountCalculator discountCalculator;
     private float priceChange = 0;
 
-    public Order(DiscountCalculator discountCalculator) {
+    public Order(DiscountCalculator discountCalculator, List<DiscountRules> discountRulesList) {
 
         this.discountCalculator = discountCalculator;
-        //FreeDelieveryRule freeDelieveryRule = new FreeDelieveryRule();
-
+        this.discountRulesList = discountRulesList;
     }
 
     public float getPrice() {
@@ -34,7 +33,6 @@ public class Order {
     public void setPrice(float price) {
         this.price = price;
     }
-
 
     public List<DiscountRules> getDiscountRules() {
        return discountRulesList;
