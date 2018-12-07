@@ -14,7 +14,7 @@ public class ChatBot {
         discountCalculator.add("Pizza");
         State discountCardState = new State();
         List<DiscountRules> discountRulesList = new ArrayList<>();
-        DiscountCard discountCard = new DiscountCard(discountCardState, true);
+        DiscountCard discountCard = new DiscountCard(discountCardState, true, true);
 
         discountRulesList.add(discountCard);
 

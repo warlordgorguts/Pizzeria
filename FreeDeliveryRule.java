@@ -7,17 +7,24 @@ public class FreeDeliveryRule implements DiscountRules{
     private String messageToClient;
     private int priority;
     private boolean isActive;
+    private boolean isReusable;
+    private boolean needToReuse;
     private State state;
 
-    public FreeDeliveryRule(State state, boolean isActive) {
+    public FreeDeliveryRule(State state, boolean isActive, boolean isReusable) {
         this.state = state;
         this.isActive = isActive;
+        this.isReusable = isReusable;
     }
 
     public void checkRule(Order order, Validator validator) {
-        if (!state.getValue() && isActive) {
+        if ((!state.getValue() && isActive) || (state.getValue() && isActive && needToReuse)) {
             state.setValue(true);
             boolean awaitingAnswer = true;
+
+            if (isReusable){
+                needToReuse = true;
+            }
 
             if ((threshold - order.getPrice()) <= deliveryCost) {
 

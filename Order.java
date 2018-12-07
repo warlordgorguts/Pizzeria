@@ -73,6 +73,12 @@ public class Order {
     public void print() {
         itemsQuantity.forEach((item, q) -> System.out.println(q + ", " + item.getName() + " x " + item.getPrice()));
         calcItemsDiscount();
+
+        for (DiscountRules discountRule : getDiscountRules()) {
+            discountRule.executeRule(this);
+            discountRule.printRule();
+        }
+
         System.out.println("Total price is: " + String.format("%.02f", price - priceChange));
         StringBuilder discountedStringBuilder = new StringBuilder();
         discountedItemsQuantity.forEach((item, q) ->

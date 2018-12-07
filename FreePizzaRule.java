@@ -9,20 +9,29 @@ public class FreePizzaRule implements DiscountRules {
     private int numberOfFreePizza;
     private String discount = "Pizza";
     private boolean isActive;
+    private boolean isReusable;
+    private boolean needToReuse;
     private State state;
     private List<Item> itemsEligibleDiscount = new ArrayList<>();
     private Map<Item, Integer> discountedItemsQuantity = new HashMap<>();
 
-    public FreePizzaRule(String messageToClient, int priority, int numberOfFreePizza) {
+    public FreePizzaRule(State state, boolean isActive, boolean isReusable, String messageToClient, int priority, int numberOfFreePizza) {
         this.messageToClient = messageToClient;
         this.priority = priority;
         this.numberOfFreePizza = numberOfFreePizza;
+        this.state = state;
+        this.isActive = isActive;
+        this.isReusable = isReusable;
     }
 
     @Override
     public void checkRule(Order order, Validator validator) {
-        if (!state.getValue() && isActive) {
+        if ((!state.getValue() && isActive) || (state.getValue() && isActive && needToReuse)) {
             state.setValue(true);
+
+            if (isReusable){
+                needToReuse = true;
+            }
 
             int countDiscount = 0;
             float priceChange = 0;

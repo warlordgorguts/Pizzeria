@@ -5,6 +5,7 @@ import java.sql.*;
 public class JDBCReader {
 
     public void Select(){
+
         try (
                 Connection conn = DriverManager.getConnection(
                         "jdbc:mysql://localhost:3306/pizzeria_db?allowMultiQueries=true", "root", "1234");
@@ -56,19 +57,46 @@ public class JDBCReader {
     }
 
     public int SelectDiscount(String cardNumber){
+
+        String QuerySqlString = "select cardDiscount, cardNumber from discountcards where cardNumber = ?";
+
         try (
 
                 Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/pizzeria_db", "root", "1234");
-                Statement stmt = conn.createStatement();
+                        "jdbc:mysql://localhost:3306/pizzeria_db?", "root", "1234");
+                PreparedStatement stmt = conn.prepareStatement(QuerySqlString);
         ) {
-            String QuerySqlString = "select cardDiscount from discountcards where cardNumber = " + cardNumber + " ;";
-
-            ResultSet cardResultSet = stmt.executeQuery(QuerySqlString);
-
-            while(cardResultSet.next()) {
-               return cardResultSet.getInt("cardDiscount");
+            stmt.setString(1, cardNumber);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                return rs.getInt("cardDiscount");
             }
+            //boolean hasMoreResultSets = stmt.execute();
+            //ResultSet cardResultSet = stmt.executeQuery(QuerySqlString);
+            //boolean hasMoreResultSets = stmt.execute("select cardDiscount from discountcards where cardNumber = ?[cardNumber]");
+            //preparedStatement = dbConnection.prepareStatement(selectSQL);
+            //preparedStatement.setInt(1, 1001);
+
+            /*
+            while ( hasMoreResultSets || stmt.getUpdateCount() != -1 ) {
+                if ( hasMoreResultSets ) {
+                    ResultSet cardResultSet = stmt.getResultSet();
+                    while(cardResultSet.next()) {
+                        return cardResultSet.getInt("cardDiscount");
+                    }
+                }
+                else { // if ddl/dml/...
+                    int queryResult = stmt.getUpdateCount();
+                    if ( queryResult == -1 ) { // no more queries processed
+                        break;
+                    } // no more queries processed
+                    // handle success, failure, generated keys, etc here
+                } // if ddl/dml/...
+
+                // check to continue in the loop
+                hasMoreResultSets = stmt.getMoreResults();
+            } // while results
+        */
 
         } catch(SQLException ex) {
             ex.printStackTrace();
