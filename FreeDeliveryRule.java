@@ -1,74 +1,55 @@
 package pizzabot;
 
-public class FreeDeliveryRule implements DiscountRules{
+public class FreeDeliveryRule extends DiscountRule {
 
-    private int threshold;
+    private float threshold;
     private float deliveryCost;
+    private float deliveryCostCurrent;
     private String messageToClient;
-    private int priority;
-    private boolean isActive;
-    private boolean isReusable;
-    private boolean needToReuse;
-    private State state;
 
-    public FreeDeliveryRule(State state, boolean isActive, boolean isReusable) {
-        this.state = state;
-        this.isActive = isActive;
-        this.isReusable = isReusable;
-    }
-
-    public void checkRule(Order order, Validator validator) {
-        if ((!state.getValue() && isActive) || (state.getValue() && isActive && needToReuse)) {
-            state.setValue(true);
-            boolean awaitingAnswer = true;
-
-            if (isReusable){
-                needToReuse = true;
-            }
-
-            if ((threshold - order.getPrice()) <= deliveryCost) {
-
-                while (awaitingAnswer) {
-                    switch (new Reader().readString()) {
-                        case "n": {
-                            awaitingAnswer = false;
-                            break;
-                        }
-                        case "y": {
-                            awaitingAnswer = false;
-                            System.out.println("Type product command:");
-                            state.setValue(false);
-                            validator.validate(order);
-                            break;
-                        }
-                        default: {
-                            System.out.println("Type one of the following (y/n)");
-                        }
-                    }
-                }
-            } else {
-                order.setPrice(order.getPrice() + deliveryCost);
-            }
-        }
+    public FreeDeliveryRule(State state, boolean isActive, boolean isReusable, float threshold, float deliveryCost) {
+        super.state = state;
+        super.isActive = isActive;
+        super.isReusable = isReusable;
+        this.threshold = threshold;
+        this.deliveryCost = deliveryCost;
     }
 
     @Override
-    public void executeRule(Order order) {
-        if (isActive) {
-            if (order.getPrice() >= threshold) {
-                deliveryCost = 0;
-            } else {
-                order.setPrice(order.getPrice() + deliveryCost);
+    public boolean checkRule(Order order) {
+        if (isApplicable()){
+
+            float orderPrice = order.getPrice();
+
+            if (((threshold - orderPrice) > 0) && ((threshold - orderPrice) <= deliveryCost)) {
+                System.out.println
+                        ("Your order cost is: " + orderPrice + " Delivery will cost additional " + deliveryCost);
+                System.out.println
+                        ("Do you want to buy something to get free delivery? (start after " + threshold + ") (y/n)");
+                return true;
             }
+        }
+        return false;
+    }
+
+    @Override
+    public void execute(Order order) {
+        if (isActive && needToExecute) {
+            float priceChange = (order.getPrice() - deliveryCostCurrent);
+            if (order.getPrice() >= threshold) {
+                deliveryCostCurrent = 0;
+            } else {
+                deliveryCostCurrent = deliveryCost;
+            }
+            order.setPrice(priceChange + deliveryCostCurrent);
         }
     }
 
     @Override
     public void printRule() {
-        System.out.println("Delivery: " + deliveryCost);
+        if (isActive && needToExecute) {
+            System.out.println("Delivery: " + deliveryCost);
+        }
     }
 
-    public State getState() {
-        return state;
-    }
 }

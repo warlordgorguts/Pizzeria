@@ -3,6 +3,8 @@ package pizzabot;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextFileReader {
 
@@ -14,24 +16,18 @@ public class TextFileReader {
         this.textSplitter = textSplitter;
     }
 
-    public void readFile() {
-
-        String line;
-
+    public List<Pizza> read() {
+        List<Pizza> pizzas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(textFilePath))) {
-
+            String line;
             while ((line = br.readLine()) != null) {
-
-                // use comma as separator
                 String[] pizza = line.split(textSplitter);
-                Menu.getInstance().add(new Pizza(pizza[0], Float.valueOf(pizza[1]), pizza[2]));
-
-                //System.out.println("Pizza [name= " + pizza[0] + " , price=" + pizza[1] + "]");
-
+                pizzas.add(new Pizza(pizza[0], Float.valueOf(pizza[1]), pizza[2]));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return pizzas;
     }
+
 }

@@ -15,15 +15,4 @@ public interface Item {
     void setDiscount(String discount);
 
     void print();
-
-    //int getDiscountedQuantity();
-
-    //void setDiscountedQuantity(int discountedQuantity);
-
-    //int getQuantity();
-
-    //void setQuantity(int i);
-
-    //void printOrder();
-
 }

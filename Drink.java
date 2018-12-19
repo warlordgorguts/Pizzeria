@@ -50,38 +50,4 @@ public class Drink implements Item {
     public String getCommandToPrepare() {
         return commandToPrepare;
     }
-    /*
-    @Override
-    public int getQuantity() {
-        return quantity;
-    }
-    */
-
-    /*
-    @Override
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-    */
-
-    /*
-    @Override
-    public int getDiscountedQuantity() {
-        return discountedQuantity;
-    }
-    */
-
-    /*
-    @Override
-    public void setDiscountedQuantity(int discountedQuantity) {
-        this.discountedQuantity = discountedQuantity;
-    }
-    */
-
-    /*
-    @Override
-    public void printOrder() {
-        System.out.println(getQuantity() + ", " + getName() + " x " + getPrice());
-    }
-    */
 }
